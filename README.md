@@ -1,45 +1,55 @@
+This is a professional **README.md** specifically tailored to your project, including the live links and the tech stack you used. 
+
+You can copy this directly into your `README.md` file in VS Code, then `git add .`, `git commit -m "Update README"`, and `git push` it to GitHub.
 
 ---
 
 # 🚀 GitHub Profile Analyzer API
 
-A robust backend service built with Node.js, Express, and MySQL that analyzes GitHub user profiles. It fetches data from the GitHub Public API, calculates useful insights (like total stars and top languages), and stores the results for future retrieval.
+A backend service built with **Node.js**, **Express**, and **MySQL** that analyzes GitHub user profiles using the GitHub Public API. The service calculates unique insights such as "Total Stars" and "Top Programming Languages" and stores them in a cloud-hosted MySQL database.
 
-## 🌟 Features
-- **Profile Analysis:** Fetches public data including followers, following, and repo count.
-- **Deep Insights:** Aggregates total stars across all public repositories and identifies the user's top 3 most used programming languages.
-- **Data Persistence:** Stores analyzed profiles in a MySQL database to avoid redundant API calls.
-- **Efficient Updates:** Uses "Upsert" logic to update existing profile data if analyzed again.
-- **RESTful Endpoints:** Clean API structure for fetching all profiles or a specific profile from the database.
-
-## 🛠️ Tech Stack
-- **Backend:** Node.js, Express.js
-- **Database:** MySQL
-- **API:** GitHub REST API
-- **Tools:** Axios, Dotenv, Cors, Mysql2
+## 🔗 Live Links
+- **GitHub Repository:** [https://github.com/nikitaaaa123/github-analyzer](https://github.com/nikitaaaa123/github-analyzer)
+- **Live Deployed API:** [https://github-analyzer-7hyk.onrender.com](https://github-analyzer-7hyk.onrender.com)
 
 ---
 
-## ⚙️ Installation & Setup
+## ✨ Features
+- **Profile Analysis:** Automatically fetches data like followers, following, and public repository counts.
+- **Custom Insights:** 
+    - **Total Stars:** Calculates the total number of stars the user has received across all public repositories.
+    - **Top Languages:** Identifies the user's top 3 most used programming languages based on their repositories.
+- **Data Persistence:** Stores and updates (Upsert) data in a **MySQL** database (Aiven Cloud).
+- **RESTful API:** Provides endpoints to retrieve a list of all analyzed profiles or a specific user's data.
 
-### 1. Clone the Repository
-```bash
-git clone https://github.com/YOUR_USERNAME/github-analyzer-api.git
-cd github-analyzer-api
-```
+---
 
-### 2. Install Dependencies
-```bash
-npm install
-```
+## 🛠️ Tech Stack
+- **Backend:** Node.js, Express.js
+- **Database:** MySQL (Cloud-hosted via Aiven)
+- **API Integration:** GitHub REST API (using Axios)
+- **Deployment:** Render (API) & Aiven (Database)
+- **Environment Management:** Dotenv
 
-### 3. Database Setup
-Create a MySQL database and a table by running the following SQL commands in your MySQL Workbench or CLI:
+---
+
+## 📡 API Endpoints
+
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `POST` | `/api/analyze/:username` | Fetches GitHub data, calculates insights, and saves to the database. |
+| `GET` | `/api/profiles` | Retrieves all analyzed profiles from the database. |
+| `GET` | `/api/profiles/:username` | Retrieves a specific user's analysis from the database. |
+
+### Example Request (Postman)
+**POST** `https://github-analyzer-7hyk.onrender.com/api/analyze/sarthakjalan05`
+
+---
+
+## 🏗️ Database Schema
+The project uses a MySQL table named `profiles`. The schema is as follows:
 
 ```sql
-CREATE DATABASE github_analyzer;
-USE github_analyzer;
-
 CREATE TABLE profiles (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(255) UNIQUE NOT NULL,
@@ -57,52 +67,68 @@ CREATE TABLE profiles (
 );
 ```
 
-### 4. Environment Variables
-Create a `.env` file in the root directory and add your credentials:
+---
 
-```env
-PORT=5000
-DB_HOST=localhost
-DB_USER=root
-DB_PASS=your_mysql_password
-DB_NAME=github_analyzer
-GITHUB_TOKEN=your_github_personal_access_token
+## 🚀 Local Setup Instructions
+
+1. **Clone the repo:**
+   ```bash
+   git clone https://github.com/nikitaaaa123/github-analyzer.git
+   cd github-analyzer
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Configure Environment Variables:**
+   Create a `.env` file in the root directory:
+   ```env
+   PORT=5000
+   DB_HOST=localhost
+   DB_USER=root
+   DB_PASS=your_password
+   DB_NAME=github_analyzer
+   GITHUB_TOKEN=your_github_personal_access_token
+   ```
+
+4. **Setup Database:**
+   Run the SQL code in `schema.sql` inside your local MySQL Workbench.
+
+5. **Run the server:**
+   ```bash
+   npm run dev
+   ```
+
+---
+
+## 📁 Project Structure
+```text
+├── config/
+│   └── db.js            # MySQL connection with SSL for cloud DB
+├── controllers/
+│   └── profileController.js # Business logic for GitHub API & DB queries
+├── routes/
+│   └── profileRoutes.js # API route definitions
+├── .env                 # Environment secrets (not uploaded to GitHub)
+├── .gitignore           # Ignores node_modules and .env
+├── server.js            # Entry point for the application
+├── schema.sql           # Database schema export
+└── package.json         # Project dependencies and scripts
 ```
 
-### 5. Run the Server
-```bash
-# For development (using nodemon)
-npm run dev
+---
 
-# For production
-npm start
-```
+## ✅ Submission Checklist
+- [x] GitHub repository link
+- [x] Live deployed API URL
+- [x] README file with setup instructions
+- [x] Database schema/export
+- [x] Postman collection (Optional)
 
 ---
 
-## 📡 API Endpoints
-
-| Method | Endpoint | Description |
-| :--- | :--- | :--- |
-| **POST** | `/api/analyze/:username` | Fetches data from GitHub, calculates insights, and saves to DB. |
-| **GET** | `/api/profiles` | Returns a list of all analyzed profiles stored in the DB. |
-| **GET** | `/api/profiles/:username` | Returns data for a specific profile from the DB. |
-
----
-
-## 📊 Useful Insights Explained
-Unlike basic profile fetchers, this API provides:
-1.  **Total Stars:** Calculates the sum of all stars received across all public repositories owned by the user.
-2.  **Tech Stack:** Scans all repositories to determine the **top 3 most used languages**, helping to understand the user's primary expertise.
-
----
-
-## 🧪 Testing with Postman
-1.  **Analyze a user:** Send a `POST` request to `http://localhost:5000/api/analyze/octocat`.
-2.  **View all:** Send a `GET` request to `http://localhost:5000/api/profiles`.
-3.  **View one:** Send a `GET` request to `http://localhost:5000/api/profiles/octocat`.
-
----
-
-## 📝 License
-This project is open-source and available under the [MIT License](LICENSE).
+### Author
+**Nikita Bhansali**  
+*Full Stack Developer Intern Task*
