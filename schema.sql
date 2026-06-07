@@ -1,7 +1,8 @@
-CREATE DATABASE github_analyzer;
-USE github_analyzer;
+-- 1. Use the default database provided by Aiven
+USE defaultdb;
 
-CREATE TABLE profiles (
+-- 2. Create the profiles table
+CREATE TABLE IF NOT EXISTS profiles (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(255) UNIQUE NOT NULL,
     name VARCHAR(255),
@@ -17,3 +18,6 @@ CREATE TABLE profiles (
     top_languages VARCHAR(255), 
     analysis_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+
+-- 3. Verify the table was created (Optional)
+DESCRIBE profiles;
