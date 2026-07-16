@@ -1,7 +1,3 @@
-This is a professional **README.md** specifically tailored to your project, including the live links and the tech stack you used. 
-
-You can copy this directly into your `README.md` file in VS Code, then `git add .`, `git commit -m "Update README"`, and `git push` it to GitHub.
-
 ---
 
 # 🚀 GitHub Profile Analyzer API
